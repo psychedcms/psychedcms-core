@@ -40,17 +40,6 @@ trait ContentTrait
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $depublishedAt = null;
 
-    /**
-     * Author relation - implementing entity must override this property
-     * with proper ORM mapping specifying the target User entity.
-     *
-     * Example override in implementing entity:
-     * #[ORM\ManyToOne(targetEntity: User::class)]
-     * #[ORM\JoinColumn(nullable: true)]
-     * private ?User $author = null;
-     */
-    private ?object $author = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -110,18 +99,6 @@ trait ContentTrait
     public function setDepublishedAt(?DateTimeImmutable $depublishedAt): static
     {
         $this->depublishedAt = $depublishedAt;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?object
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?object $author): static
-    {
-        $this->author = $author;
 
         return $this;
     }
