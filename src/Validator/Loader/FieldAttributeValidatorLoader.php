@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PsychedCms\Core\Validator\Loader;
 
+use PsychedCms\Core\Attribute\Field\EmailField;
 use PsychedCms\Core\Attribute\Field\FieldAttributeInterface;
 use ReflectionClass;
 use ReflectionProperty;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Loader\LoaderInterface;
@@ -31,18 +33,24 @@ final class FieldAttributeValidatorLoader implements LoaderInterface
                 continue;
             }
 
-            if ($fieldAttribute->pattern === null) {
-                continue;
+            $label = $fieldAttribute->label ?? $property->getName();
+
+            if ($fieldAttribute instanceof EmailField) {
+                $constraint = new Email(
+                    message: sprintf('The "%s" field must be a valid email address.', $label)
+                );
+                $metadata->addPropertyConstraint($property->getName(), $constraint);
+                $constraintsAdded = true;
             }
 
-            $label = $fieldAttribute->label ?? $property->getName();
-            $constraint = new Regex(
-                pattern: $fieldAttribute->pattern,
-                message: sprintf('The "%s" field does not match the required pattern.', $label)
-            );
-
-            $metadata->addPropertyConstraint($property->getName(), $constraint);
-            $constraintsAdded = true;
+            if ($fieldAttribute->pattern !== null) {
+                $constraint = new Regex(
+                    pattern: $fieldAttribute->pattern,
+                    message: sprintf('The "%s" field does not match the required pattern.', $label)
+                );
+                $metadata->addPropertyConstraint($property->getName(), $constraint);
+                $constraintsAdded = true;
+            }
         }
 
         return $constraintsAdded;
