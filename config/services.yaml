@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/symfony/symfony/7.0/src/Symfony/Component/DependencyInjection/Loader/schema/services.schema.json
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # OpenAPI Schema Factory Decorator
+    PsychedCms\Core\OpenApi\Factory\FieldAttributeSchemaFactory:
+        decorates: 'api_platform.json_schema.schema_factory'
+        decoration_priority: 10
+        arguments:
+            $decorated: '@.inner'
+
+    # Pattern Validation Loader
+    PsychedCms\Core\Validator\Loader\FieldAttributeValidatorLoader:
+        tags:
+            - { name: validator.loader }
+
+    # Sanitizing Denormalizer
+    PsychedCms\Core\Serializer\Normalizer\SanitizingDenormalizer:
+        arguments:
+            $sanitizer: '@html_sanitizer'

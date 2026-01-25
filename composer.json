@@ -7,8 +7,12 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.2",
+        "api-platform/core": "^4.0",
+        "doctrine/doctrine-bundle": "^2.18",
         "doctrine/orm": "^3.6",
         "gedmo/doctrine-extensions": "^3.0",
+        "symfony/html-sanitizer": "^7.4",
+        "symfony/serializer": "^7.4",
         "symfony/validator": "^7.4"
     },
     "require-dev": {
