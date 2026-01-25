@@ -7,7 +7,10 @@ namespace PsychedCms\Core\OpenApi\Factory;
 use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\JsonSchema\SchemaFactoryInterface;
 use ApiPlatform\Metadata\Operation;
+use PsychedCms\Core\Attribute\ContentType;
+use PsychedCms\Core\Attribute\ContentTypeAttributeInterface;
 use PsychedCms\Core\Attribute\Field\FieldAttributeInterface;
+use PsychedCms\Core\Content\ContentInterface;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -47,23 +50,24 @@ final class FieldAttributeSchemaFactory implements SchemaFactoryInterface
         }
 
         $reflectionClass = new ReflectionClass($className);
+        $contentTypeAttribute = $this->getContentTypeAttribute($reflectionClass);
         $fieldAttributes = $this->extractFieldAttributes($reflectionClass);
 
-        if (empty($fieldAttributes)) {
-            return $schema;
-        }
-
         foreach ($definitions as $definitionName => $definition) {
-            if (!isset($definition['properties'])) {
-                continue;
+            // Add ContentType metadata at schema root level (only for ContentInterface implementations)
+            if ($contentTypeAttribute !== null && is_a($className, ContentInterface::class, true)) {
+                $definition['x-psychedcms'] = $contentTypeAttribute->toSchemaArray($className);
             }
 
-            foreach ($definition['properties'] as $propertyName => $propertySchema) {
-                if (!isset($fieldAttributes[$propertyName])) {
-                    continue;
-                }
+            // Add field attributes to properties
+            if (isset($definition['properties'])) {
+                foreach ($definition['properties'] as $propertyName => $propertySchema) {
+                    if (!isset($fieldAttributes[$propertyName])) {
+                        continue;
+                    }
 
-                $propertySchema['x-psychedcms'] = $fieldAttributes[$propertyName]->toSchemaArray();
+                    $propertySchema['x-psychedcms'] = $fieldAttributes[$propertyName]->toSchemaArray();
+                }
             }
         }
 
@@ -94,6 +98,15 @@ final class FieldAttributeSchemaFactory implements SchemaFactoryInterface
             if ($instance instanceof FieldAttributeInterface) {
                 return $instance;
             }
+        }
+
+        return null;
+    }
+
+    private function getContentTypeAttribute(ReflectionClass $reflectionClass): ?ContentTypeAttributeInterface
+    {
+        foreach ($reflectionClass->getAttributes(ContentType::class) as $attribute) {
+            return $attribute->newInstance();
         }
 
         return null;
