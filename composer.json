@@ -1,5 +1,5 @@
 {
-    "name": "psyched/psyched-cms-core",
+    "name": "psychedcms/psychedcms-core",
     "description": "Core components for PsychedCMS - Content management building blocks for PHP domain entities",
     "type": "psychedcms",
     "license": "proprietary",
