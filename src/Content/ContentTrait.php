@@ -23,9 +23,6 @@ trait ContentTrait
     #[Assert\Regex(pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/')]
     private ?string $slug = null;
 
-    #[ORM\Column(length: 32)]
-    private string $status = 'draft';
-
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
     private ?DateTimeImmutable $createdAt = null;
@@ -33,23 +30,6 @@ trait ContentTrait
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Gedmo\Timestampable(on: 'update')]
     private ?DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?DateTimeImmutable $publishedAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?DateTimeImmutable $depublishedAt = null;
-
-    /**
-     * Author relation - implementing entity must override this property
-     * with proper ORM mapping specifying the target User entity.
-     *
-     * Example override in implementing entity:
-     * #[ORM\ManyToOne(targetEntity: User::class)]
-     * #[ORM\JoinColumn(nullable: true)]
-     * private ?User $author = null;
-     */
-    private ?object $author = null;
 
     public function getId(): ?int
     {
@@ -68,18 +48,6 @@ trait ContentTrait
         return $this;
     }
 
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
@@ -88,41 +56,5 @@ trait ContentTrait
     public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
-    }
-
-    public function getPublishedAt(): ?DateTimeImmutable
-    {
-        return $this->publishedAt;
-    }
-
-    public function setPublishedAt(?DateTimeImmutable $publishedAt): static
-    {
-        $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    public function getDepublishedAt(): ?DateTimeImmutable
-    {
-        return $this->depublishedAt;
-    }
-
-    public function setDepublishedAt(?DateTimeImmutable $depublishedAt): static
-    {
-        $this->depublishedAt = $depublishedAt;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?object
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?object $author): static
-    {
-        $this->author = $author;
-
-        return $this;
     }
 }

@@ -52,8 +52,15 @@ final class FieldAttributeSchemaFactory implements SchemaFactoryInterface
         $reflectionClass = new ReflectionClass($className);
         $contentTypeAttribute = $this->getContentTypeAttribute($reflectionClass);
         $fieldAttributes = $this->extractFieldAttributes($reflectionClass);
+        $shortClassName = $reflectionClass->getShortName();
 
         foreach ($definitions as $definitionName => $definition) {
+            // Only apply metadata to definitions that match this class
+            // e.g., "Post.jsonld" should only get Post metadata, not Page metadata
+            if (!str_starts_with($definitionName, $shortClassName)) {
+                continue;
+            }
+
             // Add ContentType metadata at schema root level (only for ContentInterface implementations)
             if ($contentTypeAttribute !== null && is_a($className, ContentInterface::class, true)) {
                 $definition['x-psychedcms'] = $contentTypeAttribute->toSchemaArray($className);
