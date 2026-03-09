@@ -21,6 +21,7 @@ final class ContentType implements ContentTypeAttributeInterface
         public readonly string $defaultStatus = 'draft',
         public readonly bool $searchable = true,
         public readonly bool $singleton = false,
+        public readonly bool $viewless = false,
         public readonly ?array $locales = null,
     ) {
     }
@@ -36,7 +37,7 @@ final class ContentType implements ContentTypeAttributeInterface
         $singularSlug = $this->singularSlug ?? $this->slugify($singularName);
         $slug = $this->slug ?? $this->slugify($name);
 
-        return [
+        $schema = [
             'name' => $name,
             'singularName' => $singularName,
             'slug' => $slug,
@@ -48,6 +49,12 @@ final class ContentType implements ContentTypeAttributeInterface
             'singleton' => $this->singleton,
             'locales' => $this->locales ?? ['en'],
         ];
+
+        if ($this->viewless) {
+            $schema['viewless'] = true;
+        }
+
+        return $schema;
     }
 
     private function deriveShortName(string $className): string

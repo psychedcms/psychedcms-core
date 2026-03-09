@@ -112,6 +112,22 @@ final class ContentTypeTest extends TestCase
         $this->assertFalse($result['singleton']);
         $this->assertSame(['en'], $result['locales']);
     }
+
+    public function testViewlessDefaultIsFalse(): void
+    {
+        $attribute = new ContentType();
+        $result = $attribute->toSchemaArray(Article::class);
+
+        $this->assertArrayNotHasKey('viewless', $result);
+    }
+
+    public function testViewlessIncludedWhenTrue(): void
+    {
+        $attribute = new ContentType(viewless: true);
+        $result = $attribute->toSchemaArray(Article::class);
+
+        $this->assertTrue($result['viewless']);
+    }
 }
 
 class Article
