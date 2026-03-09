@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PsychedCms\Core\Validator\Loader;
 
+use PsychedCms\Core\Attribute\Field\CollectionField;
 use PsychedCms\Core\Attribute\Field\EmailField;
 use PsychedCms\Core\Attribute\Field\FieldAttributeInterface;
+use PsychedCms\Core\Validator\Constraint\ValidCollection;
 use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\Validator\Constraints\Email;
@@ -38,6 +40,16 @@ final class FieldAttributeValidatorLoader implements LoaderInterface
             if ($fieldAttribute instanceof EmailField) {
                 $constraint = new Email(
                     message: sprintf('The "%s" field must be a valid email address.', $label)
+                );
+                $metadata->addPropertyConstraint($property->getName(), $constraint);
+                $constraintsAdded = true;
+            }
+
+            if ($fieldAttribute instanceof CollectionField) {
+                $constraint = new ValidCollection(
+                    schema: $fieldAttribute->schema,
+                    min: $fieldAttribute->min,
+                    max: $fieldAttribute->max,
                 );
                 $metadata->addPropertyConstraint($property->getName(), $constraint);
                 $constraintsAdded = true;
