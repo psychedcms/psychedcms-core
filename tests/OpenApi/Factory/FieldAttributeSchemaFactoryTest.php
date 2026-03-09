@@ -17,7 +17,7 @@ final class FieldAttributeSchemaFactoryTest extends TestCase
 {
     public function testXPsychedcmsExtensionIsInjectedIntoPropertySchema(): void
     {
-        $schema = $this->createSchemaWithDefinitions('TestEntity', [
+        $schema = $this->createSchemaWithDefinitions('TestEntityWithFieldAttribute', [
             'title' => ['type' => 'string'],
         ]);
 
@@ -28,7 +28,7 @@ final class FieldAttributeSchemaFactoryTest extends TestCase
         $result = $factory->buildSchema(TestEntityWithFieldAttribute::class);
 
         $definitions = $result->getDefinitions();
-        $titleProperty = $definitions['TestEntity']['properties']['title'] ?? null;
+        $titleProperty = $definitions['TestEntityWithFieldAttribute']['properties']['title'] ?? null;
 
         $this->assertNotNull($titleProperty);
         $this->assertArrayHasKey('x-psychedcms', (array) $titleProperty);
@@ -38,7 +38,7 @@ final class FieldAttributeSchemaFactoryTest extends TestCase
 
     public function testPropertiesWithoutFieldAttributesAreUnchanged(): void
     {
-        $schema = $this->createSchemaWithDefinitions('TestEntity', [
+        $schema = $this->createSchemaWithDefinitions('TestEntityWithoutFieldAttribute', [
             'noAttribute' => ['type' => 'string'],
         ]);
 
@@ -49,7 +49,7 @@ final class FieldAttributeSchemaFactoryTest extends TestCase
         $result = $factory->buildSchema(TestEntityWithoutFieldAttribute::class);
 
         $definitions = $result->getDefinitions();
-        $noAttributeProperty = $definitions['TestEntity']['properties']['noAttribute'] ?? null;
+        $noAttributeProperty = $definitions['TestEntityWithoutFieldAttribute']['properties']['noAttribute'] ?? null;
 
         $this->assertNotNull($noAttributeProperty);
         $this->assertArrayNotHasKey('x-psychedcms', (array) $noAttributeProperty);
@@ -82,7 +82,7 @@ final class FieldAttributeSchemaFactoryTest extends TestCase
 
     public function testReflectionFindsAttributesImplementingFieldAttributeInterface(): void
     {
-        $schema = $this->createSchemaWithDefinitions('TestEntity', [
+        $schema = $this->createSchemaWithDefinitions('TestEntityWithFieldAttribute', [
             'body' => ['type' => 'string'],
         ]);
 
@@ -93,7 +93,7 @@ final class FieldAttributeSchemaFactoryTest extends TestCase
         $result = $factory->buildSchema(TestEntityWithFieldAttribute::class);
 
         $definitions = $result->getDefinitions();
-        $bodyProperty = $definitions['TestEntity']['properties']['body'] ?? null;
+        $bodyProperty = $definitions['TestEntityWithFieldAttribute']['properties']['body'] ?? null;
 
         $this->assertNotNull($bodyProperty);
         $this->assertArrayHasKey('x-psychedcms', (array) $bodyProperty);
@@ -102,7 +102,7 @@ final class FieldAttributeSchemaFactoryTest extends TestCase
 
     public function testNullValuesAreFilteredFromSchemaOutput(): void
     {
-        $schema = $this->createSchemaWithDefinitions('TestEntity', [
+        $schema = $this->createSchemaWithDefinitions('TestEntityWithFieldAttribute', [
             'title' => ['type' => 'string'],
         ]);
 
@@ -113,7 +113,7 @@ final class FieldAttributeSchemaFactoryTest extends TestCase
         $result = $factory->buildSchema(TestEntityWithFieldAttribute::class);
 
         $definitions = $result->getDefinitions();
-        $titleProperty = $definitions['TestEntity']['properties']['title'] ?? null;
+        $titleProperty = $definitions['TestEntityWithFieldAttribute']['properties']['title'] ?? null;
 
         $this->assertNotNull($titleProperty);
         $xPsychedcms = $titleProperty['x-psychedcms'];

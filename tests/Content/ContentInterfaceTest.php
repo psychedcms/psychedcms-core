@@ -18,7 +18,7 @@ final class ContentInterfaceTest extends TestCase
         $this->assertSame('PsychedCms\Core\Content', $reflection->getNamespaceName());
     }
 
-    public function testInterfaceDefinesAllEightGetterMethods(): void
+    public function testInterfaceDefinesAllGetterMethods(): void
     {
         $reflection = new ReflectionClass(ContentInterface::class);
         $methods = $reflection->getMethods();
@@ -27,11 +27,8 @@ final class ContentInterfaceTest extends TestCase
         $expectedMethods = [
             'getId',
             'getSlug',
-            'getStatus',
             'getCreatedAt',
             'getUpdatedAt',
-            'getPublishedAt',
-            'getDepublishedAt',
             'getAuthor',
         ];
 
@@ -44,15 +41,12 @@ final class ContentInterfaceTest extends TestCase
     {
         $reflection = new ReflectionClass(ContentInterface::class);
 
-        $nullableMethods = ['getId', 'getSlug', 'getCreatedAt', 'getUpdatedAt', 'getPublishedAt', 'getDepublishedAt', 'getAuthor'];
+        $nullableMethods = ['getId', 'getSlug', 'getCreatedAt', 'getUpdatedAt', 'getAuthor'];
         foreach ($nullableMethods as $methodName) {
             $method = $reflection->getMethod($methodName);
             $returnType = $method->getReturnType();
             $this->assertTrue($returnType->allowsNull(), "{$methodName}() should return nullable type");
         }
-
-        $nonNullableMethod = $reflection->getMethod('getStatus');
-        $this->assertFalse($nonNullableMethod->getReturnType()->allowsNull(), "getStatus() should return non-nullable string");
     }
 
     public function testMockImplementationSatisfiesInterface(): void
@@ -68,11 +62,6 @@ final class ContentInterfaceTest extends TestCase
                 return 'test-slug';
             }
 
-            public function getStatus(): string
-            {
-                return 'draft';
-            }
-
             public function getCreatedAt(): ?DateTimeImmutable
             {
                 return new DateTimeImmutable();
@@ -81,16 +70,6 @@ final class ContentInterfaceTest extends TestCase
             public function getUpdatedAt(): ?DateTimeImmutable
             {
                 return new DateTimeImmutable();
-            }
-
-            public function getPublishedAt(): ?DateTimeImmutable
-            {
-                return null;
-            }
-
-            public function getDepublishedAt(): ?DateTimeImmutable
-            {
-                return null;
             }
 
             public function getAuthor(): ?object
@@ -102,6 +81,5 @@ final class ContentInterfaceTest extends TestCase
         $this->assertInstanceOf(ContentInterface::class, $mock);
         $this->assertSame(1, $mock->getId());
         $this->assertSame('test-slug', $mock->getSlug());
-        $this->assertSame('draft', $mock->getStatus());
     }
 }
