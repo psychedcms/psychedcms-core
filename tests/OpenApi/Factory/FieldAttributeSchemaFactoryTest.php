@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use PsychedCms\Core\Attribute\ContentType;
 use PsychedCms\Core\Attribute\Field\FieldAttribute;
 use PsychedCms\Core\Content\ContentInterface;
+use PsychedCms\Core\Content\UserInterface;
 use PsychedCms\Core\OpenApi\Factory\FieldAttributeSchemaFactory;
 
 final class FieldAttributeSchemaFactoryTest extends TestCase
@@ -290,7 +291,7 @@ class TestContentTypeEntity implements ContentInterface
         return null;
     }
 
-    public function getAuthor(): ?object
+    public function getAuthor(): ?UserInterface
     {
         return null;
     }
@@ -343,7 +344,7 @@ class TestContentTypeWithField implements ContentInterface
         return null;
     }
 
-    public function getAuthor(): ?object
+    public function getAuthor(): ?UserInterface
     {
         return null;
     }

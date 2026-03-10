@@ -16,5 +16,5 @@ interface ContentInterface
 
     public function getUpdatedAt(): ?DateTimeImmutable;
 
-    public function getAuthor(): ?object;
+    public function getAuthor(): ?UserInterface;
 }

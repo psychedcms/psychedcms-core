@@ -8,6 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use PHPUnit\Framework\TestCase;
 use PsychedCms\Core\Content\ContentInterface;
 use PsychedCms\Core\Content\ContentTrait;
+use PsychedCms\Core\Content\UserInterface;
 use ReflectionClass;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -70,7 +71,7 @@ final class ContentTraitTest extends TestCase
         return new class implements ContentInterface {
             use ContentTrait;
 
-            public function getAuthor(): ?object
+            public function getAuthor(): ?UserInterface
             {
                 return null;
             }

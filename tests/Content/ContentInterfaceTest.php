@@ -7,6 +7,7 @@ namespace PsychedCms\Core\Tests\Content;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use PsychedCms\Core\Content\ContentInterface;
+use PsychedCms\Core\Content\UserInterface;
 use ReflectionClass;
 
 final class ContentInterfaceTest extends TestCase
@@ -72,7 +73,7 @@ final class ContentInterfaceTest extends TestCase
                 return new DateTimeImmutable();
             }
 
-            public function getAuthor(): ?object
+            public function getAuthor(): ?UserInterface
             {
                 return null;
             }
