@@ -21,3 +21,12 @@ services:
     PsychedCms\Core\Serializer\Normalizer\SanitizingDenormalizer:
         arguments:
             $sanitizer: '@html_sanitizer'
+
+    # Settings Repository
+    PsychedCms\Core\Settings\Repository\SettingRepository: ~
+
+    # Locale Settings Provider (DB-backed with env var fallback)
+    PsychedCms\Core\Settings\LocaleSettingsProvider:
+        arguments:
+            $appLocales: '%app_locales%'
+            $envDefaultLocale: '%app_default_locale%'

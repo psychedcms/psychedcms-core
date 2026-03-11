@@ -13,6 +13,7 @@ use PsychedCms\Core\Attribute\Field\FieldAttributeInterface;
 use PsychedCms\Core\Content\ContentInterface;
 use ReflectionClass;
 use ReflectionProperty;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 final class FieldAttributeSchemaFactory implements SchemaFactoryInterface
 {
@@ -91,11 +92,23 @@ final class FieldAttributeSchemaFactory implements SchemaFactoryInterface
         foreach ($reflectionClass->getProperties() as $property) {
             $fieldAttribute = $this->getFieldAttribute($property);
             if ($fieldAttribute !== null) {
-                $attributes[$property->getName()] = $fieldAttribute;
+                // Use SerializedName if present (matches OpenAPI property key)
+                $serializedName = $this->getSerializedName($property);
+                $key = $serializedName ?? $property->getName();
+                $attributes[$key] = $fieldAttribute;
             }
         }
 
         return $attributes;
+    }
+
+    private function getSerializedName(ReflectionProperty $property): ?string
+    {
+        foreach ($property->getAttributes(SerializedName::class) as $attribute) {
+            return $attribute->newInstance()->getSerializedName();
+        }
+
+        return null;
     }
 
     private function getFieldAttribute(ReflectionProperty $property): ?FieldAttributeInterface
