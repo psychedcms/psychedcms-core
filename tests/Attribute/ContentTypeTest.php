@@ -74,6 +74,8 @@ final class ContentTypeTest extends TestCase
             searchable: false,
             singleton: true,
             locales: ['en', 'fr'],
+            group: 'content',
+            priority: 10,
         );
         $result = $attribute->toSchemaArray(Article::class);
 
@@ -87,6 +89,8 @@ final class ContentTypeTest extends TestCase
         $this->assertFalse($result['searchable']);
         $this->assertTrue($result['singleton']);
         $this->assertSame(['en', 'fr'], $result['locales']);
+        $this->assertSame('content', $result['group']);
+        $this->assertSame(10, $result['priority']);
     }
 
     public function testSchemaArrayStructure(): void
@@ -104,6 +108,8 @@ final class ContentTypeTest extends TestCase
         $this->assertArrayHasKey('searchable', $result);
         $this->assertArrayHasKey('singleton', $result);
         $this->assertArrayHasKey('locales', $result);
+        $this->assertArrayHasKey('group', $result);
+        $this->assertArrayHasKey('priority', $result);
 
         $this->assertSame('fa-file', $result['icon']);
         $this->assertTrue($result['showOnDashboard']);
@@ -111,6 +117,8 @@ final class ContentTypeTest extends TestCase
         $this->assertTrue($result['searchable']);
         $this->assertFalse($result['singleton']);
         $this->assertSame(['en'], $result['locales']);
+        $this->assertNull($result['group']);
+        $this->assertSame(0, $result['priority']);
     }
 }
 

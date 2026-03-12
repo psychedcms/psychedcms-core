@@ -22,6 +22,8 @@ final class ContentType implements ContentTypeAttributeInterface
         public readonly bool $searchable = true,
         public readonly bool $singleton = false,
         public readonly ?array $locales = null,
+        public readonly ?string $group = null,
+        public readonly int $priority = 0,
     ) {
     }
 
@@ -47,6 +49,8 @@ final class ContentType implements ContentTypeAttributeInterface
             'searchable' => $this->searchable,
             'singleton' => $this->singleton,
             'locales' => $this->locales ?? ['en'],
+            'group' => $this->group,
+            'priority' => $this->priority,
         ];
     }
 
