@@ -7,9 +7,12 @@ namespace PsychedCms\Core\Attribute\Field;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final class EmailField extends FieldAttribute
+final class RelationField extends FieldAttribute
 {
     public function __construct(
+        public readonly ?string $reference = null,
+        public readonly ?string $displayField = null,
+        public readonly bool $multiple = false,
         ?string $label = null,
         ?string $group = null,
         ?string $placeholder = null,
@@ -57,6 +60,26 @@ final class EmailField extends FieldAttribute
 
     public function getFieldType(): string
     {
-        return 'email';
+        return 'relation';
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toSchemaArray(): array
+    {
+        $schema = parent::toSchemaArray();
+
+        if ($this->reference !== null) {
+            $schema['reference'] = $this->reference;
+        }
+        if ($this->displayField !== null) {
+            $schema['displayField'] = $this->displayField;
+        }
+        if ($this->multiple) {
+            $schema['multiple'] = true;
+        }
+
+        return $schema;
     }
 }

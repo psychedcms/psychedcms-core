@@ -23,6 +23,7 @@ final class ContentType implements ContentTypeAttributeInterface
         public readonly bool $singleton = false,
         public readonly ?array $locales = null,
         public readonly ?string $group = null,
+        public readonly ?string $aggregateRoot = null,
         public readonly int $priority = 0,
     ) {
     }
@@ -50,6 +51,7 @@ final class ContentType implements ContentTypeAttributeInterface
             'singleton' => $this->singleton,
             'locales' => $this->locales ?? ['en'],
             'group' => $this->group,
+            'aggregateRoot' => $this->aggregateRoot,
             'priority' => $this->priority,
         ];
     }

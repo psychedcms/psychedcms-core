@@ -34,6 +34,11 @@ class FieldAttribute implements FieldAttributeInterface
         public readonly bool $translatable = false,
         public readonly bool $sanitise = true,
         public readonly ?bool $allowHtml = null,
+
+        // List display options
+        public readonly ?bool $listColumn = null,
+        public readonly ?int $listColumnOrder = null,
+        public readonly ?string $listDisplayPattern = null,
     ) {
     }
 
@@ -66,6 +71,9 @@ class FieldAttribute implements FieldAttributeInterface
             'translatable' => $this->translatable ?: null,
             'sanitise' => $this->sanitise ?: null,
             'allowHtml' => $this->allowHtml,
+            'listColumn' => $this->listColumn,
+            'listColumnOrder' => $this->listColumnOrder,
+            'listDisplayPattern' => $this->listDisplayPattern,
         ];
 
         return array_filter($schema, static fn ($value) => $value !== null);
