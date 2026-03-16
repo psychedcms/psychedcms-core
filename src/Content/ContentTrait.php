@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use PsychedCms\Core\Attribute\Field\SlugField;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,6 +29,7 @@ trait ContentTrait
     #[Assert\Length(max: 255)]
     #[Assert\Regex(pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/')]
     #[ApiProperty(identifier: true)]
+    #[SlugField(label: 'Slug', group: 'meta')]
     #[Groups(['content:read', 'content:write'])]
     private ?string $slug = null;
 
