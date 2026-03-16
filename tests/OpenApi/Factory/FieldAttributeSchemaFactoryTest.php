@@ -12,6 +12,7 @@ use PsychedCms\Core\Attribute\ContentType;
 use PsychedCms\Core\Attribute\Field\FieldAttribute;
 use PsychedCms\Core\Content\ContentInterface;
 use PsychedCms\Core\OpenApi\Factory\FieldAttributeSchemaFactory;
+use Symfony\Component\Uid\Ulid;
 
 final class FieldAttributeSchemaFactoryTest extends TestCase
 {
@@ -255,7 +256,7 @@ class TestContentTypeEntity implements ContentInterface
 {
     public string $title;
 
-    public function getId(): ?int
+    public function getId(): ?Ulid
     {
         return null;
     }
@@ -308,7 +309,7 @@ class TestContentTypeWithField implements ContentInterface
     #[FieldAttribute(label: 'Article Title')]
     public string $title;
 
-    public function getId(): ?int
+    public function getId(): ?Ulid
     {
         return null;
     }

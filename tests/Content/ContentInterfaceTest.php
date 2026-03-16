@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use PsychedCms\Core\Content\ContentInterface;
 use ReflectionClass;
+use Symfony\Component\Uid\Ulid;
 
 final class ContentInterfaceTest extends TestCase
 {
@@ -58,9 +59,16 @@ final class ContentInterfaceTest extends TestCase
     public function testMockImplementationSatisfiesInterface(): void
     {
         $mock = new class implements ContentInterface {
-            public function getId(): ?int
+            private Ulid $ulid;
+
+            public function __construct()
             {
-                return 1;
+                $this->ulid = new Ulid();
+            }
+
+            public function getId(): ?Ulid
+            {
+                return $this->ulid;
             }
 
             public function getSlug(): ?string
@@ -100,7 +108,7 @@ final class ContentInterfaceTest extends TestCase
         };
 
         $this->assertInstanceOf(ContentInterface::class, $mock);
-        $this->assertSame(1, $mock->getId());
+        $this->assertInstanceOf(Ulid::class, $mock->getId());
         $this->assertSame('test-slug', $mock->getSlug());
         $this->assertSame('draft', $mock->getStatus());
     }

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace PsychedCms\Core\Content;
 
 use DateTimeImmutable;
+use Symfony\Component\Uid\Ulid;
 
 interface ContentInterface
 {
-    public function getId(): ?int;
+    public function getId(): ?Ulid;
 
     public function getSlug(): ?string;
 
