@@ -8,5 +8,7 @@ interface ContentInterface extends EntityInterface
 {
     public function getSlug(): ?string;
 
+    public function getExcerpt(): ?string;
+
     public function getAuthor(): ?object;
 }

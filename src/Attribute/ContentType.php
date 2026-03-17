@@ -25,7 +25,6 @@ final class ContentType implements ContentTypeAttributeInterface
         public readonly ?string $group = null,
         public readonly ?string $aggregateRoot = null,
         public readonly int $priority = 0,
-        public readonly ?string $excerpt = null,
     ) {
     }
 
@@ -54,7 +53,6 @@ final class ContentType implements ContentTypeAttributeInterface
             'group' => $this->group,
             'aggregateRoot' => $this->aggregateRoot,
             'priority' => $this->priority,
-            'excerpt' => $this->excerpt,
         ];
     }
 
