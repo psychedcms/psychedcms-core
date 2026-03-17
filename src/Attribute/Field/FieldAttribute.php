@@ -39,6 +39,9 @@ class FieldAttribute implements FieldAttributeInterface
         public readonly ?bool $listColumn = null,
         public readonly ?int $listColumnOrder = null,
         public readonly ?string $listDisplayPattern = null,
+        public readonly bool $listSortable = false,
+        public readonly bool $listFilterable = false,
+        public readonly ?string $listFilterType = null,
     ) {
     }
 
@@ -74,6 +77,9 @@ class FieldAttribute implements FieldAttributeInterface
             'listColumn' => $this->listColumn,
             'listColumnOrder' => $this->listColumnOrder,
             'listDisplayPattern' => $this->listDisplayPattern,
+            'listSortable' => $this->listSortable ?: null,
+            'listFilterable' => $this->listFilterable ?: null,
+            'listFilterType' => $this->listFilterType,
         ];
 
         return array_filter($schema, static fn ($value) => $value !== null);

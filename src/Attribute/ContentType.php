@@ -25,6 +25,9 @@ final class ContentType implements ContentTypeAttributeInterface
         public readonly ?string $group = null,
         public readonly ?string $aggregateRoot = null,
         public readonly int $priority = 0,
+        public readonly ?string $listDefaultSort = null,
+        public readonly ?int $listPerPage = null,
+        public readonly bool $listBulkDelete = true,
     ) {
     }
 
@@ -53,6 +56,9 @@ final class ContentType implements ContentTypeAttributeInterface
             'group' => $this->group,
             'aggregateRoot' => $this->aggregateRoot,
             'priority' => $this->priority,
+            'listDefaultSort' => $this->listDefaultSort,
+            'listPerPage' => $this->listPerPage,
+            'listBulkDelete' => $this->listBulkDelete ? null : false,
         ];
     }
 
