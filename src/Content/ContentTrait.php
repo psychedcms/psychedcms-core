@@ -5,24 +5,15 @@ declare(strict_types=1);
 namespace PsychedCms\Core\Content;
 
 use ApiPlatform\Metadata\ApiProperty;
-use DateTimeImmutable;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use PsychedCms\Core\Attribute\Field\SlugField;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait ContentTrait
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'ulid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
-    #[ApiProperty(identifier: false, readable: false)]
-    private ?Ulid $id = null;
+    use EntityTrait;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\NotBlank]
@@ -32,19 +23,6 @@ trait ContentTrait
     #[SlugField(label: 'Slug', group: 'meta')]
     #[Groups(['content:read', 'content:write'])]
     private ?string $slug = null;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    #[Gedmo\Timestampable(on: 'create')]
-    private ?DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    #[Gedmo\Timestampable(on: 'update')]
-    private ?DateTimeImmutable $updatedAt = null;
-
-    public function getId(): ?Ulid
-    {
-        return $this->id;
-    }
 
     #[Groups(['content:read'])]
     #[SerializedName('id')]
@@ -63,15 +41,5 @@ trait ContentTrait
         $this->slug = $slug;
 
         return $this;
-    }
-
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-        return $this->updatedAt;
     }
 }
