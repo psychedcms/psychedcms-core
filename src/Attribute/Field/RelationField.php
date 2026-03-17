@@ -13,6 +13,7 @@ final class RelationField extends FieldAttribute
         public readonly ?string $reference = null,
         public readonly ?string $displayField = null,
         public readonly bool $multiple = false,
+        public readonly string $display = 'autocomplete',
         ?string $label = null,
         ?string $group = null,
         ?string $placeholder = null,
@@ -78,6 +79,9 @@ final class RelationField extends FieldAttribute
         }
         if ($this->multiple) {
             $schema['multiple'] = true;
+        }
+        if ($this->display !== 'autocomplete') {
+            $schema['display'] = $this->display;
         }
 
         return $schema;

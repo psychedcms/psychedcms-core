@@ -10,7 +10,7 @@ use ApiPlatform\Metadata\Operation;
 use PsychedCms\Core\Attribute\ContentType;
 use PsychedCms\Core\Attribute\ContentTypeAttributeInterface;
 use PsychedCms\Core\Attribute\Field\FieldAttributeInterface;
-use PsychedCms\Core\Content\ContentInterface;
+use PsychedCms\Core\Content\EntityInterface;
 use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -62,8 +62,8 @@ final class FieldAttributeSchemaFactory implements SchemaFactoryInterface
                 continue;
             }
 
-            // Add ContentType metadata at schema root level (only for ContentInterface implementations)
-            if ($contentTypeAttribute !== null && is_a($className, ContentInterface::class, true)) {
+            // Add ContentType metadata at schema root level (for all entities with ContentType attribute)
+            if ($contentTypeAttribute !== null && is_a($className, EntityInterface::class, true)) {
                 $definition['x-psychedcms'] = $contentTypeAttribute->toSchemaArray($className);
             }
 
