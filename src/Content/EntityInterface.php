@@ -11,6 +11,8 @@ interface EntityInterface
 {
     public function getId(): ?Ulid;
 
+    public function getSlug(): ?string;
+
     public function getCreatedAt(): ?DateTimeImmutable;
 
     public function getUpdatedAt(): ?DateTimeImmutable;
