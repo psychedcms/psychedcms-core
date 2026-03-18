@@ -29,7 +29,8 @@ trait EntityTrait
     #[Assert\Length(max: 255)]
     #[Assert\Regex(pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/')]
     #[ApiProperty(identifier: true)]
-    #[SlugField(label: 'Slug', group: 'meta')]
+    #[Gedmo\Translatable]
+    #[SlugField(label: 'Slug', group: 'meta', translatable: true)]
     #[Groups(['content:read', 'content:write'])]
     private ?string $slug = null;
 
