@@ -17,6 +17,9 @@ services:
         tags:
             - { name: validator.loader }
 
+    # Admin-editable groups denormalizer (strips meta-group fields for non-admins on PUT/PATCH)
+    PsychedCms\Core\Serializer\Normalizer\AdminEditableGroupsDenormalizer: ~
+
     # Sanitizing Denormalizer
     PsychedCms\Core\Serializer\Normalizer\SanitizingDenormalizer:
         arguments:
