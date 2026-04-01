@@ -56,9 +56,9 @@ final class FieldAttributeSchemaFactory implements SchemaFactoryInterface
         $shortClassName = $reflectionClass->getShortName();
 
         foreach ($definitions as $definitionName => $definition) {
-            // Only apply metadata to definitions that match this class
-            // e.g., "Post.jsonld" should only get Post metadata, not Page metadata
-            if (!str_starts_with($definitionName, $shortClassName)) {
+            // Only apply metadata to definitions that belong to this exact class.
+            // e.g., "Post.jsonld-..." should match Post, but "EventReport-..." must NOT match Event.
+            if (!$this->definitionBelongsToClass($definitionName, $shortClassName)) {
                 continue;
             }
 
@@ -121,6 +121,24 @@ final class FieldAttributeSchemaFactory implements SchemaFactoryInterface
         }
 
         return null;
+    }
+
+    private function definitionBelongsToClass(string $definitionName, string $shortClassName): bool
+    {
+        if ($definitionName === $shortClassName) {
+            return true;
+        }
+
+        // Definition names follow patterns like "Post-post.read" or "Post.jsonld-post.read"
+        // Ensure the character after the class name is a separator, not a letter
+        // (so "Event" does not match "EventReport")
+        $len = \strlen($shortClassName);
+        if (\strlen($definitionName) <= $len) {
+            return false;
+        }
+
+        return \str_starts_with($definitionName, $shortClassName)
+            && !\ctype_alnum($definitionName[$len]);
     }
 
     private function getContentTypeAttribute(ReflectionClass $reflectionClass): ?ContentTypeAttributeInterface
