@@ -10,10 +10,12 @@ use Attribute;
 final class CollectionField extends FieldAttribute
 {
     /**
-     * @param array<string, string|array<string, mixed>> $schema Sub-field definitions
+     * @param array<string, string|array<string, mixed>> $schema   Sub-field definitions
+     * @param bool                                       $sortable Render drag handles instead of a position column; the entity's setter is expected to derive the position from the array index
      */
     public function __construct(
         public readonly array $schema = [],
+        public readonly bool $sortable = false,
         ?string $label = null,
         ?string $group = null,
         ?string $info = null,
@@ -53,6 +55,7 @@ final class CollectionField extends FieldAttribute
     {
         $schema = parent::toSchemaArray();
         $schema['schema'] = $this->schema;
+        $schema['sortable'] = $this->sortable;
 
         return $schema;
     }
