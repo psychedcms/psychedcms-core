@@ -25,7 +25,6 @@ trait EntityTrait
     private ?Ulid $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     #[Assert\Regex(pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/')]
     #[ApiProperty(identifier: true)]

@@ -33,3 +33,6 @@ services:
         arguments:
             $appLocales: '%app_locales%'
             $envDefaultLocale: '%app_default_locale%'
+
+    # Auto-generates slug on prePersist from #[SlugSource] property or getTitle()
+    PsychedCms\Core\EventListener\SlugGeneratorListener: ~
